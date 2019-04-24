@@ -1,9 +1,9 @@
 
 'use strict'
 
-const auth = require('./modules/auth')
-const persistence = require('./modules/persistence')
-const OMDB = require('./modules/OMDB')
+const auth = require('./module/auth')
+const persistence = require('./module/persistence')
+const OMDB = require('./module/OMDB')
 
 // ------------------ ROUTE FUNCTIONS ------------------ 
 
@@ -85,3 +85,39 @@ exports.showCart = (request, callback) => {
 		callback(err)
 	})
 }
+
+// ------------------ UTILITY FUNCTIONS ------------------
+
+const extractParam = (request, param) => new Promise( (resolve, reject) => {
+	if (request.params === undefined || request.params[param] === undefined) reject(new Error(`${param} parameter missing`))
+	resolve(request.params[param])
+})
+
+const extractBodyKey = (request, key) => new Promise( (resolve, reject) => {
+	if (request.body === undefined || request.body[key] === undefined) reject(new Error(`missing key ${key} in request body`))
+	resolve(request.body[key])
+})
+
+exports.cleanArray = (request, data) => new Promise((resolve) => {
+	const host = request.host || 'http://localhost'
+	const clean = data.items.map(element => {
+		return {
+			title: element.volumeInfo.title,
+			link: `${host}/books/${element.id}`
+		}
+	})
+
+	resolve({books: clean})
+})
+
+exports.removeMongoFields = (request, data) => new Promise( (resolve, reject) => {
+	const host = request.host || 'http://localhost'
+	const clean = data.map(element => {
+		return {
+			title: element.title,
+			link: `${host}/books/${element.bookID}`
+		}
+	})
+
+	resolve({books: clean})
+})

@@ -7,7 +7,7 @@ const server = restify.createServer()
 
 server.use(restify.plugins.fullResponse())
 server.use(restify.plugins.bodyParser())
-server.use(restify.queryParser())
+//server.use(restify.queryParser())
 server.use(restify.plugins.authorizationParser())
 
 const cinema = require('./cinema.js')
@@ -24,6 +24,46 @@ server.get('/', (req, res, next) => {
 
 //
 //@api ...
+server.get('/films', (req, res) => {
+	bookshop.search(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			res.send(status.ok, data)
+		}
+		res.end()
+	})
+})
+
+server.post('/favourite', (req, res) => {
+	bookshop.addToCart(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			
+			res.send(status.added, {book: data})
+		}
+		res.end()
+	})
+})
+
+server.get('/favourite', (req, res) => {
+	bookshop.showCart(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			res.send(status.ok, data)
+		}
+		res.end()
+	})
+})
+
 server.post('/accounts', (req, res) => {
 	cinema.addUser(req, (err, data) => {
 		res.setHeader('content-type', 'application/json')
