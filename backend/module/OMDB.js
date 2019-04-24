@@ -9,7 +9,7 @@ exports.searchByString = (query,year) => new Promise( (resolve, reject) => {
 
 	request.get(url, (err, res, body) => {
 		if (err) {
-			reject(Error('failed to make API call'))
+			reject(Error('failed to make API search'))
 		}
 		const data = JSON.parse(body)
 		resolve(data)
