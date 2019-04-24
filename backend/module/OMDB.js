@@ -1,10 +1,10 @@
-//http://www.omdbapi.com/?i=tt3896198&apikey=b27d06db
+//http://www.omdbapi.com/?apikey=b27d06db
 'use strict'
 
 const request = require('request')
 
 exports.searchByString = query => new Promise( (resolve, reject) => {
-	const url = `https://www.googleapis.com/books/v1/volumes?maxResults=40&fields=items(id,volumeInfo(title))&q=${query}`
+	const url = `http://www.omdbapi.com/?apikey=b27d06db&s=${query}`
 
 	request.get(url, (err, res, body) => {
 		if (err) {
