@@ -15,6 +15,9 @@ exports.addUser = (request, callback) => {
 		data = credentials
 		return persistence.accountExists(credentials)
 	}).then( () => {
+		return extractBodyKey(request, 'email')
+	}).then( email => {
+		data.email = email
 		return extractBodyKey(request, 'name')
 	}).then( name => {
 		data.name = name

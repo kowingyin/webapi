@@ -5,7 +5,7 @@ const schema = require('../database_schema/schema')
 
 //ac
 exports.addAccount = details => new Promise( (resolve, reject) => {
-	if (!'username' in details && !'password' in details && !'name' in details) {
+	if (!'username' in details && !'password' in details && !'name' in details&& !'email' in details) {
 		reject(new Error('invalid user object'))
 	}
 	const user = new schema.User(details)
