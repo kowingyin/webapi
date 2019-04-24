@@ -1,8 +1,9 @@
-//http://www.omdbapi.com/?apikey=b27d06db
+//http://www.omdbapi.com/?apikey=b27d06db&
 'use strict'
 
 const request = require('request')
 
+//search by string
 exports.searchByString = query => new Promise( (resolve, reject) => {
 	const url = `http://www.omdbapi.com/?apikey=b27d06db&s=${query}`
 
@@ -15,8 +16,8 @@ exports.searchByString = query => new Promise( (resolve, reject) => {
 	})
 })
 
-exports.getByISBN = isbn => new Promise( (resolve, reject) => {
-	const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`
+exports.getByIMDBID = imdbid => new Promise( (resolve, reject) => {
+	const url = `http://www.omdbapi.com/?apikey=b27d06db&plot=full&i=${imdbid}`
 
 	request.get( url, (err, res, body) => {
 		if (err) reject(Error('could not complete request'))
@@ -26,17 +27,39 @@ exports.getByISBN = isbn => new Promise( (resolve, reject) => {
 			reject(Error('book not found'))
 		}
 		const data = {
-			title: `${json.items[0].volumeInfo.title}: ${json.items[0].volumeInfo.subtitle}`,
-			authors: json.items[0].volumeInfo.authors[0],
-			description: json.items[0].volumeInfo.description
+			Title: json.items[0].Title,
+            Year:json.items[0].Year,
+            Rated:json.items[0].Rated,
+            Released:json.items[0].Released,
+            Runtime:json.items[0].Runtime,
+            Genre:json.items[0].Genre,
+            Director:json.items[0].Director,
+            Writer:json.items[0].Writer,
+            Actors:json.items[0].Actors,
+            Plot:json.items[0].Plot,
+            Language:json.items[0].Language,
+            Country:json.items[0].Country,
+            Awards:json.items[0].Awards,
+            Poster:json.items[0].Poster,
+            Ratings:json.items[0].Ratings,
+            Metascore:json.items[0].Metascore,
+            imdbRating:json.items[0].imdbRating,
+            imdbVotes:json.items[0].imdbVotes,
+            imdbID:json.items[0].imdbID,
+            Type:json.items[0].Type,
+            DVD:json.items[0].DVD,
+            BoxOffice:json.items[0].BoxOffice,
+            Production:json.items[0].Production,
+            Website:json.items[0].Website,
+            Response:json.items[0].Response
 		}
 
 		resolve(data)
 	})
 })
 
-exports.getByID = id => new Promise( (resolve, reject) => {
-	const url = `https://www.googleapis.com/books/v1/volumes/${id}`
+exports.getByTitle = title => new Promise( (resolve, reject) => {
+	const url = `http://www.omdbapi.com/?apikey=b27d06db&plot=full&t=${title}`
 
 	request.get( url, (err, res, body) => {
 		if (err) reject(Error('could not complete request'))
@@ -46,10 +69,31 @@ exports.getByID = id => new Promise( (resolve, reject) => {
 			reject(Error('book not found'))
 		}
 		const data = {
-			title: `${json.volumeInfo.title}: ${json.volumeInfo.subtitle}`,
-			authors: json.volumeInfo.authors[0],
-			description: json.volumeInfo.description.replace(/<(.|\n)*?>/g, ''),
-			bookID: id
+			Title: json.items[0].Title,
+            Year:json.items[0].Year,
+            Rated:json.items[0].Rated,
+            Released:json.items[0].Released,
+            Runtime:json.items[0].Runtime,
+            Genre:json.items[0].Genre,
+            Director:json.items[0].Director,
+            Writer:json.items[0].Writer,
+            Actors:json.items[0].Actors,
+            Plot:json.items[0].Plot,
+            Language:json.items[0].Language,
+            Country:json.items[0].Country,
+            Awards:json.items[0].Awards,
+            Poster:json.items[0].Poster,
+            Ratings:json.items[0].Ratings,
+            Metascore:json.items[0].Metascore,
+            imdbRating:json.items[0].imdbRating,
+            imdbVotes:json.items[0].imdbVotes,
+            imdbID:json.items[0].imdbID,
+            Type:json.items[0].Type,
+            DVD:json.items[0].DVD,
+            BoxOffice:json.items[0].BoxOffice,
+            Production:json.items[0].Production,
+            Website:json.items[0].Website,
+            Response:json.items[0].Response
 		}
 
 		resolve(data)
