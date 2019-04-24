@@ -4,8 +4,8 @@
 const request = require('request')
 
 //search by string
-exports.searchByString = query => new Promise( (resolve, reject) => {
-	const url = `http://www.omdbapi.com/?apikey=b27d06db&s=${query}`
+exports.searchByString = (query,year) => new Promise( (resolve, reject) => {
+	const url = `http://www.omdbapi.com/?apikey=b27d06db&s=${query}&y=${year}`
 
 	request.get(url, (err, res, body) => {
 		if (err) {
@@ -16,8 +16,8 @@ exports.searchByString = query => new Promise( (resolve, reject) => {
 	})
 })
 
-exports.getByIMDBID = imdbid => new Promise( (resolve, reject) => {
-	const url = `http://www.omdbapi.com/?apikey=b27d06db&plot=full&i=${imdbid}`
+exports.getByIMDBID = (imdbid,year) => new Promise( (resolve, reject) => {
+	const url = `http://www.omdbapi.com/?apikey=b27d06db&plot=full&i=${imdbid}&y=${year}`
 
 	request.get( url, (err, res, body) => {
 		if (err) reject(Error('could not complete request'))
@@ -58,8 +58,8 @@ exports.getByIMDBID = imdbid => new Promise( (resolve, reject) => {
 	})
 })
 
-exports.getByTitle = title => new Promise( (resolve, reject) => {
-	const url = `http://www.omdbapi.com/?apikey=b27d06db&plot=full&t=${title}`
+exports.getByTitle = (title,year) => new Promise( (resolve, reject) => {
+	const url = `http://www.omdbapi.com/?apikey=b27d06db&plot=full&t=${title}&y=${year}`
 
 	request.get( url, (err, res, body) => {
 		if (err) reject(Error('could not complete request'))

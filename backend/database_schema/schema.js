@@ -16,10 +16,12 @@ const userSchema = new Schema({
 // create a film schema
 const filmSchema = new Schema({
 	account: String,
-	title: String,
-	authors: String,
-	description: String,
-	filmID: String
+	filmtitle: String,
+	year: String,
+	runtime: String,
+	director: String,
+	plot: String,
+	imdbID: String
 })
 
 // create a model using the schema
