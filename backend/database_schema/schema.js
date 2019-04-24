@@ -21,7 +21,8 @@ const filmSchema = new Schema({
 	runtime: String,
 	director: String,
 	plot: String,
-	imdbID: String
+	imdbID: String,
+	filmID: String
 })
 
 // create a model using the schema

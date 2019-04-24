@@ -7,9 +7,10 @@ const server = restify.createServer()
 
 server.use(restify.plugins.fullResponse())
 server.use(restify.plugins.bodyParser())
+server.use(restify.queryParser())
 server.use(restify.plugins.authorizationParser())
 
-const bookshop = require('./cinema.js')
+const cinema = require('./cinema.js')
 const status = {
 	ok: 200,
 	added: 201,
@@ -20,6 +21,22 @@ const defaultPort = 8080
 server.get('/', (req, res, next) => {
 	res.redirect('/books', next)
 })
+
+//
+//@api ...
+server.post('/accounts', (req, res) => {
+	cinema.addUser(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			res.send(status.added, {user: data})
+		}
+		res.end()
+	})
+})
+//
 
 const port = process.env.PORT || defaultPort
 

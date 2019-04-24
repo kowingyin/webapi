@@ -34,33 +34,33 @@ exports.getCredentials = credentials => new Promise( (resolve, reject) => {
 	})
 })
 
-//film...
-exports.bookExists = (username, book) => new Promise( (resolve, reject) => {
-	schema.Book.find({account: username, bookID: book}, (err, docs) => {
+//film
+exports.filmExists = (username, film) => new Promise( (resolve, reject) => {
+	schema.Film.find({account: username, filmID: film}, (err, docs) => {
 		if (err) reject(new Error('database error'))
-		if (docs.length) reject(new Error('book already in cart'))
+		if (docs.length) reject(new Error('film already in cart'))
 		resolve()
 	})
 })
 
-exports.getBooksInCart = user => new Promise( (resolve, reject) => {
-	schema.Book.find({account: user}, (err, docs) => {
+exports.getfilmsInCart = user => new Promise( (resolve, reject) => {
+	schema.Film.find({account: user}, (err, docs) => {
 		if (err) reject(new Error('database error'))
 		if (!docs.length) reject(new Error('shopping cart empty'))
 		resolve(docs)
 	})
 })
 
-exports.saveBook = bookDetails => new Promise( (resolve, reject) => {
-	if (!'title' in bookDetails && !'authors' in bookDetails && !'description' in bookDetails) {
-		reject(new Error('invalid book object'))
+exports.savefilm = filmDetails => new Promise( (resolve, reject) => {
+	if (!'title' in filmDetails && !'authors' in filmDetails && !'description' in filmDetails) {
+		reject(new Error('invalid film object'))
 	}
-	const book = new schema.Book(bookDetails)
+	const film = new schema.Film(filmDetails)
 
-	book.save( (err, book) => {
+	film.save( (err, film) => {
 		if (err) {
-			reject(new Error('an error saving book'))
+			reject(new Error('an error saving film'))
 		}
-		resolve(book)
+		resolve(film)
 	})
 })

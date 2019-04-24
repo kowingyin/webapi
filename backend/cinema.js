@@ -36,13 +36,6 @@ exports.search = (request, callback) => {
 
 //
 
-exports.addToCartOld = (request, callback) => {
-	extractBodyKey(request, 'id')
-	.then( id => google.getByID(id))
-	.then( book => persistence.saveBook(book))
-	.catch( err => callback(err))
-}
-
 exports.addToCart = (request, callback) => {
 	auth.getHeaderCredentials(request).then( credentials => {
 		this.username = credentials.username
