@@ -7,7 +7,7 @@ const server = restify.createServer()
 
 server.use(restify.plugins.fullResponse())
 server.use(restify.plugins.bodyParser())
-//server.use(restify.queryParser())
+server.use(restify.plugins.queryParser())
 server.use(restify.plugins.authorizationParser())
 
 const cinema = require('./cinema.js')
@@ -19,13 +19,15 @@ const status = {
 const defaultPort = 8080
 
 server.get('/', (req, res, next) => {
-	res.redirect('/books', next)
+	res.redirect('/films', next)
 })
 
 //
 //@api ...
+
 server.get('/films', (req, res) => {
-	bookshop.search(req, (err, data) => {
+	cinema.search(req, (err, data) => {
+		console.log(req)
 		res.setHeader('content-type', 'application/json')
 		res.setHeader('accepts', 'GET')
 		if (err) {
@@ -38,7 +40,7 @@ server.get('/films', (req, res) => {
 })
 
 server.post('/favourite', (req, res) => {
-	bookshop.addToCart(req, (err, data) => {
+	cinema.addToFavourite(req, (err, data) => {
 		res.setHeader('content-type', 'application/json')
 		res.setHeader('accepts', 'GET, POST')
 		if (err) {
@@ -52,7 +54,7 @@ server.post('/favourite', (req, res) => {
 })
 
 server.get('/favourite', (req, res) => {
-	bookshop.showCart(req, (err, data) => {
+	cinema.showFavourite(req, (err, data) => {
 		res.setHeader('content-type', 'application/json')
 		res.setHeader('accepts', 'GET, POST')
 		if (err) {
@@ -63,6 +65,7 @@ server.get('/favourite', (req, res) => {
 		res.end()
 	})
 })
+//
 
 server.post('/accounts', (req, res) => {
 	cinema.addUser(req, (err, data) => {
@@ -76,6 +79,8 @@ server.post('/accounts', (req, res) => {
 		res.end()
 	})
 })
+
+//end api
 //
 
 const port = process.env.PORT || defaultPort

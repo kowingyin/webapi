@@ -30,16 +30,18 @@ exports.addUser = (request, callback) => {
 }
 
 exports.search = (request, callback) => {
-	extractParam(request, 'q')
-		.then( query => OMDB.searchByString(query))
+	console.log(request.query)
+	//extractParam(request, 'q')
+		//.then( query => 
+		OMDB.searchByString(request.query.q,"")
 		.then( data => this.cleanArray(request, data))
 		.then( data => callback(null, data))
 		.catch( err => callback(err))
 }
 
-//
+//.................
 
-exports.addToCart = (request, callback) => {
+exports.addToFavourite = (request, callback) => {
 	auth.getHeaderCredentials(request).then( credentials => {
 		this.username = credentials.username
 		this.password = credentials.password
@@ -53,22 +55,22 @@ exports.addToCart = (request, callback) => {
 		return extractBodyKey(request, 'id')
 	}).then( id => {
 		this.id = id
-		return google.getByID(id)
-	}).then( (book) => {
-		this.book = book
-		return persistence.bookExists(this.username, this.id)
-	}).then( book => {
-		this.book.account = this.username
-		return persistence.saveBook(this.book)
-	}).then( book => {
-		delete book.account
-		callback(null, book)
+		return OMDB.getByIMDBID(id)
+	}).then( (film) => {
+		this.film = film
+		return persistence.filmExists(this.username, this.id)
+	}).then( film => {
+		this.film.account = this.username
+		return persistence.saveFilm(this.film)
+	}).then( film => {
+		delete film.account
+		callback(null, film)
 	}).catch( err => {
 		callback(err)
 	})
 }
 
-exports.showCart = (request, callback) => {
+exports.showFavourite = (request, callback) => {
 	auth.getHeaderCredentials(request).then( credentials => {
 		this.username = credentials.username
 		this.password = credentials.password
@@ -79,11 +81,11 @@ exports.showCart = (request, callback) => {
 		const hash = account[0].password
 		return auth.checkPassword(this.password, hash)
 	}).then( () => {
-		return persistence.getBooksInCart(this.username)
-	}).then( books => {
-		return this.removeMongoFields(request, books)
-	}).then( books => {
-		callback(null, books)
+		return persistence.getFilmsInFavourite(this.username)
+	}).then( films => {
+		return this.removeMongoFields(request, films)
+	}).then( films => {
+		callback(null, films)
 	}).catch( err => {
 		callback(err)
 	})
@@ -103,14 +105,16 @@ const extractBodyKey = (request, key) => new Promise( (resolve, reject) => {
 
 exports.cleanArray = (request, data) => new Promise((resolve) => {
 	const host = request.host || 'http://localhost'
-	const clean = data.items.map(element => {
+	console.log(data)
+	console.log(data.Search)
+	const clean = data.Search.map(element => {
 		return {
-			title: element.volumeInfo.title,
-			link: `${host}/books/${element.id}`
+			title: element.Title,
+			link: `${host}/films/${element.imdbID}`
 		}
 	})
 
-	resolve({books: clean})
+	resolve({films: clean})
 })
 
 exports.removeMongoFields = (request, data) => new Promise( (resolve, reject) => {
@@ -118,9 +122,9 @@ exports.removeMongoFields = (request, data) => new Promise( (resolve, reject) =>
 	const clean = data.map(element => {
 		return {
 			title: element.title,
-			link: `${host}/books/${element.bookID}`
+			link: `${host}/films/${element.filmID}`
 		}
 	})
 
-	resolve({books: clean})
+	resolve({films: clean})
 })

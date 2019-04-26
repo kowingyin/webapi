@@ -5,7 +5,7 @@ const request = require('request')
 
 //search by string
 exports.searchByString = (query,year) => new Promise( (resolve, reject) => {
-	const url = `http://www.omdbapi.com/?apikey=b27d06db&s=${query}&y=${year}`
+	const url = `http://www.omdbapi.com/?apikey=b27d06db&s=${query}&page=1&y=${year}`
 
 	request.get(url, (err, res, body) => {
 		if (err) {

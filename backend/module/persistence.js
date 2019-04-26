@@ -43,7 +43,7 @@ exports.filmExists = (username, film) => new Promise( (resolve, reject) => {
 	})
 })
 
-exports.getfilmsInCart = user => new Promise( (resolve, reject) => {
+exports.getFilmsInFavourite = user => new Promise( (resolve, reject) => {
 	schema.Film.find({account: user}, (err, docs) => {
 		if (err) reject(new Error('database error'))
 		if (!docs.length) reject(new Error('shopping cart empty'))
@@ -51,7 +51,7 @@ exports.getfilmsInCart = user => new Promise( (resolve, reject) => {
 	})
 })
 
-exports.savefilm = filmDetails => new Promise( (resolve, reject) => {
+exports.saveFilm = filmDetails => new Promise( (resolve, reject) => {
 	if (!'title' in filmDetails && !'authors' in filmDetails && !'description' in filmDetails) {
 		reject(new Error('invalid film object'))
 	}
