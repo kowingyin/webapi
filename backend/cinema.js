@@ -98,6 +98,55 @@ exports.showFavourite = (request, callback) => {
 		callback(err)
 	})
 }
+exports.addToComment = (request, callback) => {
+	auth.getHeaderCredentials(request).then( credentials => {
+		this.username = credentials.username
+		this.password = credentials.password
+		return auth.hashPassword(credentials)
+	}).then( credentials => {
+		return persistence.getCredentials(credentials)
+	}).then( account => {
+		const hash = account[0].password
+		return auth.checkPassword(this.password, hash)
+	}).then( () => {
+		return extractBodyKey(request, 'id')
+	}).then( id => {
+		this.id = id
+		return OMDB.getByIMDBID(id)
+	}).then( (film) => {
+		this.film = film
+		return persistence.filmExists(this.username, this.id)
+	}).then( film => {
+		this.film.account = this.username
+		return persistence.saveFilm(this.film)
+	}).then( film => {
+		delete film.account
+		callback(null, film)
+	}).catch( err => {
+		callback(err)
+	})
+}
+
+exports.showComment = (request, callback) => {
+	auth.getHeaderCredentials(request).then( credentials => {
+		this.username = credentials.username
+		this.password = credentials.password
+		return auth.hashPassword(credentials)
+	}).then( credentials => {
+		return persistence.getCredentials(credentials)
+	}).then( account => {
+		const hash = account[0].password
+		return auth.checkPassword(this.password, hash)
+	}).then( () => {
+		return persistence.getFilmsInFavourite(this.username)
+	}).then( films => {
+		return this.removeMongoFields(request, films)
+	}).then( films => {
+		callback(null, films)
+	}).catch( err => {
+		callback(err)
+	})
+}
 
 // ------------------ UTILITY FUNCTIONS ------------------
 
@@ -120,7 +169,7 @@ exports.cleanArray = (request, data) => new Promise((resolve) => {
 		clean = data.Search.map(element => {
 			return {
 				title: element.Title,
-				link: `${host}/films?i=${element.imdbID}`
+				link: `${host}:8080/films?i=${element.imdbID}`
 			}
 		})
 	}else{
