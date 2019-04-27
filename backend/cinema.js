@@ -30,13 +30,21 @@ exports.addUser = (request, callback) => {
 }
 
 exports.search = (request, callback) => {
-	console.log(request.query)
+	//console.log(request.query)
 	//extractParam(request, 'q')
 		//.then( query => 
-		OMDB.searchByString(request.query.q,"")
-		.then( data => this.cleanArray(request, data))
-		.then( data => callback(null, data))
-		.catch( err => callback(err))
+		if(request.query.i != null){
+			OMDB.getByIMDBID(request.query.i,"")
+			.then( data => this.cleanArray(request, data))
+			.then( data => callback(null, data))
+			.catch( err => callback(err))
+		}else{
+			OMDB.searchByString(request.query.q,"")
+			.then( data => this.cleanArray(request, data))
+			.then( data => callback(null, data))
+			.catch( err => callback(err))
+		}
+		
 }
 
 //.................
@@ -105,15 +113,19 @@ const extractBodyKey = (request, key) => new Promise( (resolve, reject) => {
 
 exports.cleanArray = (request, data) => new Promise((resolve) => {
 	const host = request.host || 'http://localhost'
-	console.log(data)
-	console.log(data.Search)
-	const clean = data.Search.map(element => {
-		return {
-			title: element.Title,
-			link: `${host}/films/${element.imdbID}`
-		}
-	})
-
+	//console.log(data)
+	//console.log(data.Search)
+	var clean = ''
+	if(data.Search!=null){
+		clean = data.Search.map(element => {
+			return {
+				title: element.Title,
+				link: `${host}/films?i=${element.imdbID}`
+			}
+		})
+	}else{
+		clean = data
+	}
 	resolve({films: clean})
 })
 

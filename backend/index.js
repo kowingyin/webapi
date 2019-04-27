@@ -27,7 +27,7 @@ server.get('/', (req, res, next) => {
 
 server.get('/films', (req, res) => {
 	cinema.search(req, (err, data) => {
-		console.log(req)
+		//console.log(req)
 		res.setHeader('content-type', 'application/json')
 		res.setHeader('accepts', 'GET')
 		if (err) {
