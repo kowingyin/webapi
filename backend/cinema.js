@@ -33,13 +33,13 @@ exports.search = (request, callback) => {
 	//console.log(request.query)
 	//extractParam(request, 'q')
 		//.then( query => 
-		if(request.query.i != null){
-			OMDB.getByIMDBID(request.query.i,"")
+		if(request.query.i != null && request.query.y != null){
+			OMDB.getByIMDBID(request.query.i,request.query.y)
 			.then( data => this.cleanArray(request, data))
 			.then( data => callback(null, data))
 			.catch( err => callback(err))
-		}else{
-			OMDB.searchByString(request.query.q,"")
+		}else if(request.query.y != null){
+			OMDB.searchByString(request.query.q,request.query.y)
 			.then( data => this.cleanArray(request, data))
 			.then( data => callback(null, data))
 			.catch( err => callback(err))
@@ -60,7 +60,7 @@ exports.addToFavourite = (request, callback) => {
 		const hash = account[0].password
 		return auth.checkPassword(this.password, hash)
 	}).then( () => {
-		return extractBodyKey(request, 'id')
+		return extractBodyKey(request, 'imdbid')
 	}).then( id => {
 		this.id = id
 		return OMDB.getByIMDBID(id)

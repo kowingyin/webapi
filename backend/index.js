@@ -47,7 +47,7 @@ server.post('/favourite', (req, res) => {
 			res.send(status.badRequest, {error: err.message})
 		} else {
 			
-			res.send(status.added, {book: data})
+			res.send(status.added, {film: data})
 		}
 		res.end()
 	})

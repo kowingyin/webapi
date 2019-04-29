@@ -36,9 +36,9 @@ exports.getCredentials = credentials => new Promise( (resolve, reject) => {
 
 //film
 exports.filmExists = (username, film) => new Promise( (resolve, reject) => {
-	schema.Film.find({account: username, filmID: film}, (err, docs) => {
+	schema.Film.find({account: username, imdbID: film}, (err, docs) => {
 		if (err) reject(new Error('database error'))
-		if (docs.length) reject(new Error('film already in cart'))
+		if (docs.length) reject(new Error('film already in favourite'))
 		resolve()
 	})
 })
@@ -46,13 +46,13 @@ exports.filmExists = (username, film) => new Promise( (resolve, reject) => {
 exports.getFilmsInFavourite = user => new Promise( (resolve, reject) => {
 	schema.Film.find({account: user}, (err, docs) => {
 		if (err) reject(new Error('database error'))
-		if (!docs.length) reject(new Error('shopping cart empty'))
+		if (!docs.length) reject(new Error('favourite list empty'))
 		resolve(docs)
 	})
 })
 
 exports.saveFilm = filmDetails => new Promise( (resolve, reject) => {
-	if (!'title' in filmDetails && !'authors' in filmDetails && !'description' in filmDetails) {
+	if (!'title' in filmDetails && !'director' in filmDetails && !'imdbID' in filmDetails) {
 		reject(new Error('invalid film object'))
 	}
 	const film = new schema.Film(filmDetails)
