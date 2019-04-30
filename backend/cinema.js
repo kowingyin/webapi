@@ -30,24 +30,23 @@ exports.addUser = (request, callback) => {
 }
 
 exports.search = (request, callback) => {
-	//console.log(request.query)
-	//extractParam(request, 'q')
-		//.then( query => 
-		if(request.query.i != null && request.query.y != null){
-			OMDB.getByIMDBID(request.query.i,request.query.y)
+	var y = request.query.y
+	if(y=null){y=" "}
+		if(request.query.i != null){
+			OMDB.getByIMDBID(request.query.i,y)
 			.then( data => this.cleanArray(request, data))
 			.then( data => callback(null, data))
 			.catch( err => callback(err))
-		}else if(request.query.y != null){
-			OMDB.searchByString(request.query.q,request.query.y)
+		}else if(request.query.q != null){
+			OMDB.searchByString(request.query.q,y)
 			.then( data => this.cleanArray(request, data))
 			.then( data => callback(null, data))
 			.catch( err => callback(err))
+		}else{
+			callback(null,"wrong parameter format")
 		}
 		
 }
-
-//.................
 
 exports.addToFavourite = (request, callback) => {
 	auth.getHeaderCredentials(request).then( credentials => {
@@ -91,7 +90,6 @@ exports.showFavourite = (request, callback) => {
 	}).then( () => {
 		return persistence.getFilmsInFavourite(this.username)
 	}).then( films => {
-		console.log(films)
 		return this.removeMongoFields(request, films)
 	}).then( films => {
 		callback(null, films)
@@ -99,6 +97,29 @@ exports.showFavourite = (request, callback) => {
 		callback(err)
 	})
 }
+
+exports.deleteFavourite = (request, callback) => {
+	auth.getHeaderCredentials(request).then( credentials => {
+		this.username = credentials.username
+		this.password = credentials.password
+		return auth.hashPassword(credentials)
+	}).then( credentials => {
+		return persistence.getCredentials(credentials)
+	}).then( account => {
+		const hash = account[0].password
+		return auth.checkPassword(this.password, hash)
+	}).then( () => {
+		return extractBodyKey(request, 'imdbid')
+	}).then( id => {
+		this.id = id
+		return persistence.deleteFilm(this.username,this.id)
+	}).then( result => {
+		callback(null, result)
+	}).catch( err => {
+		callback(err)
+	})
+}
+//.................
 exports.addToComment = (request, callback) => {
 	auth.getHeaderCredentials(request).then( credentials => {
 		this.username = credentials.username
@@ -151,10 +172,10 @@ exports.showComment = (request, callback) => {
 
 // ------------------ UTILITY FUNCTIONS ------------------
 
-const extractParam = (request, param) => new Promise( (resolve, reject) => {
+/*const extractParam = (request, param) => new Promise( (resolve, reject) => {
 	if (request.params === undefined || request.params[param] === undefined) reject(new Error(`${param} parameter missing`))
 	resolve(request.params[param])
-})
+})*/
 
 const extractBodyKey = (request, key) => new Promise( (resolve, reject) => {
 	if (request.body === undefined || request.body[key] === undefined) reject(new Error(`missing key ${key} in request body`))
@@ -163,8 +184,6 @@ const extractBodyKey = (request, key) => new Promise( (resolve, reject) => {
 
 exports.cleanArray = (request, data) => new Promise((resolve) => {
 	const host = request.host || 'http://localhost'
-	//console.log(data)
-	//console.log(data.Search)
 	var clean = ''
 	if(data.Search!=null){
 		clean = data.Search.map(element => {
@@ -181,11 +200,13 @@ exports.cleanArray = (request, data) => new Promise((resolve) => {
 
 exports.removeMongoFields = (request, data) => new Promise( (resolve, reject) => {
 	const host = request.host || 'http://localhost'
-	console.log(data[0]._doc)
-	const clean = data[0]._doc.map(element => {
+	const clean = data.map(element => {
 		return {
-			title: element.title,
-			link: `${host}/films?i=${element.imdbid}`
+			Title: element.Title,
+			Director: element.Director,
+			Runtime: element.Runtime,
+			Year: element.Year,
+			link: `${host}/films?i=${element.imdbID}`
 		}
 	})
 

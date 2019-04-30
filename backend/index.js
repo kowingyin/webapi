@@ -24,10 +24,9 @@ server.get('/', (req, res, next) => {
 
 //
 //@api ...
-
+//1st get: search film
 server.get('/films', (req, res) => {
 	cinema.search(req, (err, data) => {
-		//console.log(req)
 		res.setHeader('content-type', 'application/json')
 		res.setHeader('accepts', 'GET')
 		if (err) {
@@ -39,6 +38,7 @@ server.get('/films', (req, res) => {
 	})
 })
 
+//1st post: add favourite
 server.post('/favourite', (req, res) => {
 	cinema.addToFavourite(req, (err, data) => {
 		res.setHeader('content-type', 'application/json')
@@ -53,6 +53,7 @@ server.post('/favourite', (req, res) => {
 	})
 })
 
+//2nd get: get favourite list
 server.get('/favourite', (req, res) => {
 	cinema.showFavourite(req, (err, data) => {
 		res.setHeader('content-type', 'application/json')
@@ -65,8 +66,28 @@ server.get('/favourite', (req, res) => {
 		res.end()
 	})
 })
-//
+//1st delete: delete favourite
+server.del('/favourite', (req, res) => {
+	cinema.deleteFavourite(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			res.send(status.ok, data)
+		}
+		res.end()
+	})
+})
+//2nd post: add comment
+//3rd get: get comment list
+//1st put: edit comment
+//2nd put: edit star rating
+//2nd delete: delete comment
 
+//end of main function
+
+//account and login section
 server.post('/accounts', (req, res) => {
 	cinema.addUser(req, (err, data) => {
 		res.setHeader('content-type', 'application/json')
