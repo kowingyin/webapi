@@ -63,7 +63,7 @@ exports.addToFavourite = (request, callback) => {
 		return extractBodyKey(request, 'imdbid')
 	}).then( id => {
 		this.id = id
-		return OMDB.getByIMDBID(id)
+		return OMDB.getByIMDBID(id,'')
 	}).then( (film) => {
 		this.film = film
 		return persistence.filmExists(this.username, this.id)
@@ -91,6 +91,7 @@ exports.showFavourite = (request, callback) => {
 	}).then( () => {
 		return persistence.getFilmsInFavourite(this.username)
 	}).then( films => {
+		console.log(films)
 		return this.removeMongoFields(request, films)
 	}).then( films => {
 		callback(null, films)
@@ -180,10 +181,11 @@ exports.cleanArray = (request, data) => new Promise((resolve) => {
 
 exports.removeMongoFields = (request, data) => new Promise( (resolve, reject) => {
 	const host = request.host || 'http://localhost'
-	const clean = data.map(element => {
+	console.log(data[0]._doc)
+	const clean = data[0]._doc.map(element => {
 		return {
 			title: element.title,
-			link: `${host}/films/${element.filmID}`
+			link: `${host}/films?i=${element.imdbid}`
 		}
 	})
 

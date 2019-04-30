@@ -17,15 +17,22 @@ const userSchema = new Schema({
 // create a film schema
 const filmSchema = new Schema({
 	account: String,
-	filmtitle: String,
-	year: String,
-	runtime: String,
-	director: String,
-	plot: String,
+	Title: String,
+	Year: String,
+	Runtime: String,
+	Director: String,
+	Plot: String,
 	imdbID: String,
-	filmID: String
+})
+const commentSchema = new Schema({
+	account: String,
+	Title: String,
+	Year: String,
+	Director: String,
+	imdbID: String,
 })
 
 // create a model using the schema
 exports.Film = mongoose.model('Film', filmSchema)
 exports.User = mongoose.model('User', userSchema)
+exports.Comment = mongoose.model('Comment', commentSchema)

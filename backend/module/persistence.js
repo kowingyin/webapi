@@ -56,7 +56,6 @@ exports.saveFilm = filmDetails => new Promise( (resolve, reject) => {
 		reject(new Error('invalid film object'))
 	}
 	const film = new schema.Film(filmDetails)
-
 	film.save( (err, film) => {
 		if (err) {
 			reject(new Error('an error saving film'))
