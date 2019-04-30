@@ -47,7 +47,7 @@ exports.search = (request, callback) => {
 		}
 		
 }
-
+//---
 exports.addToFavourite = (request, callback) => {
 	auth.getHeaderCredentials(request).then( credentials => {
 		this.username = credentials.username
@@ -119,7 +119,7 @@ exports.deleteFavourite = (request, callback) => {
 		callback(err)
 	})
 }
-//.................
+//---
 exports.addToComment = (request, callback) => {
 	auth.getHeaderCredentials(request).then( credentials => {
 		this.username = credentials.username
@@ -131,25 +131,50 @@ exports.addToComment = (request, callback) => {
 		const hash = account[0].password
 		return auth.checkPassword(this.password, hash)
 	}).then( () => {
-		return extractBodyKey(request, 'id')
+		return extractBodyKey(request, 'imdbid')
 	}).then( id => {
 		this.id = id
-		return OMDB.getByIMDBID(id)
-	}).then( (film) => {
-		this.film = film
-		return persistence.filmExists(this.username, this.id)
-	}).then( film => {
-		this.film.account = this.username
-		return persistence.saveFilm(this.film)
-	}).then( film => {
-		delete film.account
-		callback(null, film)
+		return extractBodyKey(request, 'comment')
+	}).then( comment => {
+		this.commentStr = comment
+		return OMDB.getByIMDBID(this.id)
+	}).then( comment => {
+		this.comment = comment
+		this.comment.account = this.username
+		this.comment.comment = this.commentStr
+		return persistence.saveComment(this.comment)
+	}).then( comment => {
+		delete comment.account
+		callback(null, comment)
 	}).catch( err => {
 		callback(err)
 	})
 }
 
-exports.showComment = (request, callback) => {
+exports.showCommentOfFilm = (request, callback) => {
+	if(request.query.i != null){
+		return persistence.getCommentByFilm(request.query.i)
+		.then( comments => {
+			return this.removeMongoFieldsComment(request, comments)
+		}).then( comments => {
+			callback(null, comments)
+		}).catch( err => {
+			callback(err)
+		})
+	}else if(request.query.u != null){
+		return persistence.getCommentByUser(request.query.u)
+		.then( comments => {
+			return this.removeMongoFieldsComment(request, comments)
+		}).then( comments => {
+			callback(null, comments)
+		}).catch( err => {
+			callback(err)
+		})
+	}
+	
+}
+
+exports.editComment = (request, callback) => {
 	auth.getHeaderCredentials(request).then( credentials => {
 		this.username = credentials.username
 		this.password = credentials.password
@@ -160,15 +185,133 @@ exports.showComment = (request, callback) => {
 		const hash = account[0].password
 		return auth.checkPassword(this.password, hash)
 	}).then( () => {
-		return persistence.getFilmsInFavourite(this.username)
-	}).then( films => {
-		return this.removeMongoFields(request, films)
-	}).then( films => {
-		callback(null, films)
+		return extractBodyKey(request, 'imdbid')
+	}).then( id => {
+		this.id = id
+		return extractBodyKey(request, 'comment')
+	}).then( comment => {
+		this.commentStr = comment
+		return OMDB.getByIMDBID(this.id)
+	}).then( comment => {
+		this.comment = comment
+		this.comment.account = this.username
+		this.comment.comment = this.commentStr
+		return persistence.editComment(this.comment)
+	}).then( comment => {
+		delete comment.account
+		callback(null, comment)
 	}).catch( err => {
 		callback(err)
 	})
 }
+
+exports.deleteComment = (request, callback) => {
+	auth.getHeaderCredentials(request).then( credentials => {
+		this.username = credentials.username
+		this.password = credentials.password
+		return auth.hashPassword(credentials)
+	}).then( credentials => {
+		return persistence.getCredentials(credentials)
+	}).then( account => {
+		const hash = account[0].password
+		return auth.checkPassword(this.password, hash)
+	}).then( () => {
+		return extractBodyKey(request, 'imdbid')
+	}).then( id => {
+		this.id = id
+		return persistence.deleteComment(this.username,this.id)
+	}).then( result => {
+		callback(null, result)
+	}).catch( err => {
+		callback(err)
+	})
+}
+//---
+exports.addToRating = (request, callback) => {
+	auth.getHeaderCredentials(request).then( credentials => {
+		this.username = credentials.username
+		this.password = credentials.password
+		return auth.hashPassword(credentials)
+	}).then( credentials => {
+		return persistence.getCredentials(credentials)
+	}).then( account => {
+		const hash = account[0].password
+		return auth.checkPassword(this.password, hash)
+	}).then( () => {
+		return extractBodyKey(request, 'imdbid')
+	}).then( id => {
+		this.id = id
+		return extractBodyKey(request, 'rating')
+	}).then( rating => {
+		this.ratingStr = rating
+		return OMDB.getByIMDBID(this.id)
+	}).then( rating => {
+		this.rating = rating
+		this.rating.account = this.username
+		this.rating.rating = this.ratingStr
+		return persistence.saveRating(this.rating)
+	}).then( rating => {
+		delete rating.account
+		callback(null, rating)
+	}).catch( err => {
+		callback(err)
+	})
+}
+
+exports.showRatingOfFilm = (request, callback) => {
+	if(request.query.i != null){
+		return persistence.getRatingByFilm(request.query.i)
+		.then( ratings => {
+			return this.removeMongoFieldsRating(request, ratings)
+		}).then( ratings => {
+			callback(null, ratings)
+		}).catch( err => {
+			callback(err)
+		})
+	}else if(request.query.u != null){
+		return persistence.getRatingByUser(request.query.u)
+		.then( ratings => {
+			return this.removeMongoFieldsRating(request, ratings)
+		}).then( ratings => {
+			callback(null, ratings)
+		}).catch( err => {
+			callback(err)
+		})
+	}
+	
+}
+
+exports.editRating = (request, callback) => {
+	auth.getHeaderCredentials(request).then( credentials => {
+		this.username = credentials.username
+		this.password = credentials.password
+		return auth.hashPassword(credentials)
+	}).then( credentials => {
+		return persistence.getCredentials(credentials)
+	}).then( account => {
+		const hash = account[0].password
+		return auth.checkPassword(this.password, hash)
+	}).then( () => {
+		return extractBodyKey(request, 'imdbid')
+	}).then( id => {
+		this.id = id
+		return extractBodyKey(request, 'rating')
+	}).then( rating => {
+		this.ratingStr = rating
+		return OMDB.getByIMDBID(this.id)
+	}).then( rating => {
+		this.rating = rating
+		this.rating.account = this.username
+		this.rating.rating = this.ratingStr
+		return persistence.editRating(this.rating)
+	}).then( rating => {
+		delete rating.account
+		callback(null, rating)
+	}).catch( err => {
+		callback(err)
+	})
+}
+
 
 // ------------------ UTILITY FUNCTIONS ------------------
 
@@ -211,4 +354,36 @@ exports.removeMongoFields = (request, data) => new Promise( (resolve, reject) =>
 	})
 
 	resolve({films: clean})
+})
+
+exports.removeMongoFieldsComment = (request, data) => new Promise( (resolve, reject) => {
+	const host = request.host || 'http://localhost'
+	const clean = data.map(element => {
+		return {
+			account: element.account,
+			Title: element.Title,
+			Year: element.Year,
+			Director: element.Director,
+			imdbID: element.imdbID,
+			comment: element.comment,
+			commentTime: element.time,
+		}
+	})
+
+	resolve({comments: clean})
+})
+
+exports.removeMongoFieldsRating = (request, data) => new Promise( (resolve, reject) => {
+	const host = request.host || 'http://localhost'
+	const clean = data.map(element => {
+		return {
+			account: element.account,
+			Title: element.Title,
+			Director: element.Director,
+			imdbID: element.imdbID,
+			rating: element.rating,
+		}
+	})
+
+	resolve({ratings: clean})
 })

@@ -23,7 +23,7 @@ server.get('/', (req, res, next) => {
 })
 
 //
-//@api ...
+//@api routing
 //1st get: search film
 server.get('/films', (req, res) => {
 	cinema.search(req, (err, data) => {
@@ -38,6 +38,7 @@ server.get('/films', (req, res) => {
 	})
 })
 
+//favourite...
 //1st post: add favourite
 server.post('/favourite', (req, res) => {
 	cinema.addToFavourite(req, (err, data) => {
@@ -74,18 +75,120 @@ server.del('/favourite', (req, res) => {
 		if (err) {
 			res.send(status.badRequest, {error: err.message})
 		} else {
-			res.send(status.ok, data)
+			res.send(status.ok, {deleteFilmResult: data})
 		}
 		res.end()
 	})
 })
-//2nd post: add comment
-//3rd get: get comment list
-//1st put: edit comment
-//2nd put: edit star rating
-//2nd delete: delete comment
 
-//end of main function
+//comment...
+//2nd post: add comment
+server.post('/comment', (req, res) => {
+	cinema.addToComment(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			
+			res.send(status.added, {film: data})
+		}
+		res.end()
+	})
+})
+
+//3rd get: get comment list by film/user
+server.get('/comment', (req, res) => {
+	cinema.showCommentOfFilm(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			
+			res.send(status.added, {commentList: data})
+		}
+		res.end()
+	})
+})
+
+//1st put: edit comment
+server.put('/comment', (req, res) => {
+	cinema.editComment(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			
+			res.send(status.added, {edited_comment: data})
+		}
+		res.end()
+	})
+})
+
+//2nd delete: delete comment
+server.del('/comment', (req, res) => {
+	cinema.deleteComment(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			
+			res.send(status.added, {deleteCommentResult: data})
+		}
+		res.end()
+	})
+})
+
+//rating....
+//2nd put: edit star/score rating
+server.put('/rating', (req, res) => {
+	cinema.editRating(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			
+			res.send(status.added, {edited_rating: data})
+		}
+		res.end()
+	})
+})
+
+//3rd post: add comment
+server.post('/rating', (req, res) => {
+	cinema.addToRating(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			
+			res.send(status.added, {rating: data})
+		}
+		res.end()
+	})
+})
+
+//4rd get: get rating list by film/user
+server.get('/rating', (req, res) => {
+	cinema.showRatingOfFilm(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			
+			res.send(status.added, {ratingList: data})
+		}
+		res.end()
+	})
+})
+
+//@end of main function routing
 
 //account and login section
 server.post('/accounts', (req, res) => {
@@ -101,7 +204,7 @@ server.post('/accounts', (req, res) => {
 	})
 })
 
-//end api
+//@end api routing
 //
 
 const port = process.env.PORT || defaultPort
