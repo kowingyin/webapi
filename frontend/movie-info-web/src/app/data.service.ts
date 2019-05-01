@@ -13,4 +13,28 @@ export class DataService {
   getFilms(query,year) {
     return this.http.get('http://localhost:8080/films?q='+query+'&y='+year)
   }
+  getFilmsWithId(imdbId){
+
+  }
+  getComment(){
+
+  }
+  postComment(){
+
+  }
+  updateComment(){
+
+  }
+  delComment(){
+
+  }
+  addFav(){
+
+  }
+  getFav(){
+
+  }
+  delFav(){
+    
+  }
 }

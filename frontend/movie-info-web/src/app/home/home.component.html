@@ -15,7 +15,7 @@
             </h3>
             <p>Year: {{film.Year}}
             </p>
-            <button class="cta" routerLink="/film-details">Details</button>
+            <button class="cta" [routerLink]="['/film-details', film.imdbId]">Details</button>
         </div>
     </li>
 </ul>

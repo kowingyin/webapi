@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'favourite', component: FavouriteComponent },
-  { path: 'film-details', component: FilmDetailsComponent }
+  { path: 'film-details/:imdbId', component: FilmDetailsComponent }
 
 ];
 
