@@ -1,0 +1,20 @@
+<h1 [ngClass]="{
+  'gray': h1Style,
+  'large': !h1Style
+ }">Home</h1>
+<h1 [style.color]="h1Style ? 'gray': 'black'">Home</h1>
+<h1 [ngStyle]="{
+  'color': h1Style ? 'gray' : 'black',
+  'font-size': !h1Style ? '1em' : '4em'
+ }">Home</h1>
+<button (mousedown)="firstClick()">Click me</button>
+<h1>Films</h1>
+<ul *ngIf="films">
+    <li *ngFor="let film of films['films']">
+
+        <h3>{{ film.title }} </h3>
+        <p>Year: {{film.Year}}</p>
+
+
+    </li>
+</ul>
