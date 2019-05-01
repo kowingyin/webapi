@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   constructor(private data: DataService) { }
 
   ngOnInit() {
-    this.data.getFilms().subscribe(data=>{
+    this.data.getFilms("Star","").subscribe(data=>{
       this.films = data;
       console.log(this.films);
     })
@@ -24,5 +24,11 @@ export class HomeComponent implements OnInit {
     this.h1Style = true;
   }
    
+  searchfilm(query,year){
+    this.data.getFilms(query,year).subscribe(data=>{
+      this.films = data;
+      console.log(this.films);
+    })
+  }
  }
  

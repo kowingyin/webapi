@@ -1,11 +1,13 @@
 <header>
     <div class="container">
-        <a routerLink="/" class="logo">apptitle</a>
-        <nav>
-            <ul>
-                <li><a routerLink="/">{{appTitle}}</a> </li>
-                <li><a routerLink="/about">About</a></li>
-                <li><a routerLink="/contact">Contact us</a></li>
+        <div class="navbar-header">
+            <a routerLink="/" class="logo">Movie info board</a>
+        </div>
+        <nav class="navbar navbar-inverse">
+            <ul class="nav navbar-nav">
+                <li routerLinkActive="active"><a routerLink="/">{{appTitle}}</a> </li>
+                <li routerLinkActive="active"><a routerLink="/login">{{LoginStat}}</a></li>
+
             </ul>
         </nav>
     </div>

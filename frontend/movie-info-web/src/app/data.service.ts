@@ -10,9 +10,7 @@ export class DataService {
   //firstClick() {
     //return console.log('clicked');
   //}
-  getFilms() {
-    return this.http.get('http://localhost:8080/films?q=avenger&y=')
-    
-    
+  getFilms(query,year) {
+    return this.http.get('http://localhost:8080/films?q='+query+'&y='+year)
   }
 }
