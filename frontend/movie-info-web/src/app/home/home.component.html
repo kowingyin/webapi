@@ -1,20 +1,20 @@
-<h1 [ngClass]="{
-  'gray': h1Style,
-  'large': !h1Style
- }">Home</h1>
-<h1 [style.color]="h1Style ? 'gray': 'black'">Home</h1>
-<h1 [ngStyle]="{
-  'color': h1Style ? 'gray' : 'black',
-  'font-size': !h1Style ? '1em' : '4em'
- }">Home</h1>
-<button (mousedown)="firstClick()">Click me</button>
-<h1>Films</h1>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<h1>Search Films Below:</h1>
+<input #search id="search" name="search" placeholder="Search.." type="text"><br>
+<input #year id="year" name="year" placeholder="Specify a year.." type="text"><br>
+<button type="submit" (click)="searchfilm(search.value,year.value)">
+    <i class="fa fa-search"></i>
+</button>
 <ul *ngIf="films">
     <li *ngFor="let film of films['films']">
-
-        <h3>{{ film.title }} </h3>
-        <p>Year: {{film.Year}}</p>
-
-
+        <div>
+            <img src="{{film.Poster}}">
+        </div>
+        <div>
+            <h3>{{ film.title }}
+            </h3>
+            <p>Year: {{film.Year}}
+            </p>
+        </div>
     </li>
 </ul>
