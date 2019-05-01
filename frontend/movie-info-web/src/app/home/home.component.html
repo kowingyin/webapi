@@ -1,20 +1,21 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <h1>Search Films Below:</h1>
 <input #search id="search" name="search" placeholder="Search.." type="text"><br>
-<input #year id="year" name="year" placeholder="Specify a year.." type="text"><br>
+<input #year id="year" name="year" placeholder="Specify a year..(optional)" type="text"><br>
 <button type="submit" (click)="searchfilm(search.value,year.value)">
     <i class="fa fa-search"></i>
 </button>
 <ul *ngIf="films">
     <li *ngFor="let film of films['films']">
-        <div>
+        <div class="item">
             <img src="{{film.Poster}}">
         </div>
-        <div>
+        <div class="item">
             <h3>{{ film.title }}
             </h3>
             <p>Year: {{film.Year}}
             </p>
+            <button class="cta" routerLink="/film-details">Details</button>
         </div>
     </li>
 </ul>

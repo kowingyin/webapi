@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { FilmDetailsComponent } from './film-details/film-details.component';
+import { FavouriteComponent } from './favourite/favourite.component';
 
 
 
@@ -19,7 +20,8 @@ import { FilmDetailsComponent } from './film-details/film-details.component';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    FilmDetailsComponent
+    FilmDetailsComponent,
+    FavouriteComponent
   ],
   imports: [
     BrowserModule,
