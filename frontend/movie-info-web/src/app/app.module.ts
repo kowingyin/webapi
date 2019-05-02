@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-//import { AuthInterceptor } from '../auth/auth.interceptor';
-
+import { AuthInterceptor } from './interceptors/auth.service';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms'; 
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
@@ -28,8 +28,10 @@ import { FavouriteComponent } from './favourite/favourite.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule, 
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [AuthInterceptor],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

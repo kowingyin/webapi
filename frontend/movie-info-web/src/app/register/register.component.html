@@ -1,3 +1,24 @@
-<p>
-  register works!
-</p>
+<form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+    <label><h3> User Sign Up</h3></label>
+    <strong>    Your name:  </strong> <br>
+    <input type="text" style="font-size:16px" formControlName="name" maxlength='10'><br>
+
+
+    <strong>    Username:  </strong> <br>
+    <input type="text" style="font-size:16px" formControlName="username" maxlength='10'>
+
+
+    <br>
+    <strong>   Password:   </strong> <br>
+    <input type="text" style="font-size:16px" formControlName="password" maxlength='10'> <br>
+
+    <strong>    email:  </strong> <br>
+    <input type="text" style="font-size:16px" formControlName="email" maxlength='10'>
+
+    <br>
+
+
+    <input type="submit" value="Sign Up!" class="cta">
+</form>
+<hr><br>
+<p>already have an account? </p><a routerLink="/login">sign in!</a>

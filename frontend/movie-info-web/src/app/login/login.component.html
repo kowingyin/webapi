@@ -1,3 +1,19 @@
-<p>
-    login works!
-</p>
+<form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+    <label><h3> User Sign In</h3></label>
+
+
+    <strong>    Username:  </strong> <br>
+    <input type="text" style="font-size:16px" formControlName="name" maxlength='10'>
+
+
+    <br>
+    <strong>   Password:   </strong> <br>
+    <input type="text" style="font-size:16px" formControlName="password" maxlength='10'> <br>
+
+    <br>
+
+
+    <input type="submit" value="Login" class="cta">
+</form>
+<hr><br>
+<p>do not have account yet? </p><a routerLink="/register">sign up!</a>
