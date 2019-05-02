@@ -10,14 +10,17 @@ export class DataService {
   //firstClick() {
     //return console.log('clicked');
   //}
+  addUser(name,username,password){
+
+  }
   getFilms(query,year) {
     return this.http.get('http://localhost:8080/films?q='+query+'&y='+year)
   }
   getFilmsWithId(imdbId){
-
+    return this.http.get('http://localhost:8080/films?i='+imdbId+'&y=')
   }
-  getComment(){
-
+  getCommentOfFilm(imdbId){
+    return this.http.get('http://localhost:8080/comment?i='+imdbId)
   }
   postComment(){
 
@@ -32,9 +35,10 @@ export class DataService {
 
   }
   getFav(){
-
+    return this.http.get('http://localhost:8080/favourite')
   }
   delFav(){
-    
+
   }
+
 }

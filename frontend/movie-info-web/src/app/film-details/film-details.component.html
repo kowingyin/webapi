@@ -1,3 +1,57 @@
-<p>
-  film-details works!
-</p>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<div style="float: left; width: 50%;">
+    <ul>
+        <li>
+            <div class="item">
+                <img src="{{filmDetails.films.Poster}}">
+            </div>
+            <div class="item">
+                <h1> {{ filmDetails.films.Title }}</h1>
+                <p>Released: {{filmDetails.films.Released}}
+                </p>
+                <p>Runtime: {{filmDetails.films.Runtime}}
+                </p>
+                <p>Director: {{filmDetails.films.Director}}
+                </p>
+                <p>Production: {{filmDetails.films.Production}}
+                </p>
+                <p>Language: {{filmDetails.films.Language}}
+                </p>
+                <p>Rated: {{filmDetails.films.Rated}}
+                </p>
+                <p>Plot: <br>
+                </p>
+                <p class="plot">{{filmDetails.films.Plot}}
+                </p>
+                <p>Actors: <br>{{filmDetails.films.Actors}}
+                </p>
+                <p>IMDB Rating: {{filmDetails.films.imdbRating}}
+                </p>
+            </div>
+        </li>
+    </ul>
+</div>
+<div style="float: right; width: 48%;">
+    <ul>
+        <li>
+            <h3 style="float: center">Comment Board</h3>
+        </li>
+        <li>
+            <input #newComment id="newComment" name="newComment" placeholder="leave your comment here :)..." type="textarea">
+            <button type="submit" (click)="onSubmit(newComment.value,'hi')"><i class="fa fa-commenting-o"></i></button>
+        </li>
+    </ul>
+    <ul *ngIf="CommentList" class="comment">
+        <li *ngFor="let comments of CommentList['comments']">
+            <div class="item">
+                <h3 style="font-size: 50%;text-align: left;">User id : {{ comments.account }}
+                </h3>
+                <p style="text-align: left;">Comment : {{comments.comment}}
+                </p>
+                <p style="font-size: 50%;text-align: right;"> {{comments.commentTime}}
+                </p>
+            </div>
+
+        </li>
+    </ul>
+</div>

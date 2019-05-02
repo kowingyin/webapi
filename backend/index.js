@@ -112,7 +112,7 @@ server.get('/comment', (req, res) => {
             res.send(status.badRequest, { error: err.message })
         } else {
 
-            res.send(status.added, { commentList: data })
+            res.send(status.added, data)
         }
         res.end()
     })
