@@ -38,7 +38,7 @@
         </li>
         <li>
             <input #newComment id="newComment" name="newComment" placeholder="leave your comment here :)..." type="textarea">
-            <button type="submit" (click)="onSubmit(newComment.value,'hi')"><i class="fa fa-commenting-o"></i></button>
+            <button type="submit" (click)="onSubmit(newComment.value)"><i class="fa fa-commenting-o"></i></button>
         </li>
     </ul>
     <ul *ngIf="CommentList" class="comment">

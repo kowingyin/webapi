@@ -22,8 +22,8 @@ export class DataService {
   getCommentOfFilm(imdbId){
     return this.http.get('http://localhost:8080/comment?i='+imdbId)
   }
-  postComment(){
-
+  postComment(imdbId,Comment){
+    //return this.http.post('http://localhost:8080/comment',)
   }
   updateComment(){
 

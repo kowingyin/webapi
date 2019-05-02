@@ -31,8 +31,8 @@ export class FilmDetailsComponent implements OnInit {
       })
     }
    
-    onSubmit(newComment,account){
-      this.data.postComment();
+    onSubmit(newComment){
+      this.data.postComment(this.imdbId,newComment);
     }
 
 }
