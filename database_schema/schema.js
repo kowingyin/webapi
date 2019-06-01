@@ -2,7 +2,7 @@
 
 // import the mongoose package
 const mongoose = require('mongoose')
-mongoose.connect(`mongodb://heroku_n33prb6t:Kw1235420.@ds231307.mlab.com:31307/heroku_n33prb6t`, { useNewUrlParser: true })
+mongoose.connect(`mongodb://heroku_n33prb6t:67jnoflgu9n421u88sqiu9s6qk@ds231307.mlab.com:31307/heroku_n33prb6t`, { useNewUrlParser: true })
 mongoose.Promise = global.Promise
 const Schema = mongoose.Schema
 
