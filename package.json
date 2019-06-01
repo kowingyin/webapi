@@ -1,0 +1,48 @@
+{
+    "name": "cinema",
+    "version": "1.0.0",
+    "description": "Cinema API",
+    "main": "index.js",
+    "apidoc": {
+        "title": "cinema API",
+        "url": "http://localhost"
+    },
+    "scripts": {
+        "start": "node index.js",
+        "test": "./node_modules/.bin/jasmine-node spec/ --color --verbose --noStack --autotest --watch .",
+        "coverage": "./node_modules/.bin/istanbul cover -x **/spec/** -x **index.js** --include-all-sources jasmine-node spec",
+        "apidoc": "node_modules/.bin/apidoc -e node_modules/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kowingyin/webapi.git"
+    },
+    "keywords": [
+        "nodejs",
+        "rest",
+        "api",
+        "javascript"
+    ],
+    "author": "Ko Wing Yin",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/kowingyin/webapi/issues"
+    },
+    "homepage": "https://github.com/kowingyin/webapi#readme",
+    "dependencies": {
+        "bcrypt": "^3.0.6",
+        "mongoose": "^5.5.12",
+        "node-persist": "3.0.4",
+        "request": "^2.88.0",
+        "restify": "^8.3.2"
+    },
+    "engines": {
+        "node": "11.13.0"
+    },
+    "devDependencies": {
+        "apidoc": "^0.17.7",
+        "istanbul": "^0.4.5",
+        "jasmine-node": "^3.0.0",
+        "rewire": "^4.0.1"
+    }
+}
